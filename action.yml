@@ -36,8 +36,8 @@ runs:
       env:
         GH_TOKEN: ${{ inputs.github-token }}
       run: | 
-        echo "🔍 Getting credential authorizations for org: ${org}"
-        echo "🔍 Dry run: ${dry_run}"
+        echo "🔍 Getting credential authorizations for org: ${{ inputs.organization }}"
+        echo "🔍 Dry run: ${{ inputs.dry-run }}"
 
         org="${{ inputs.organization }}"
         dry_run="${{ inputs.dry-run }}"
@@ -47,6 +47,12 @@ runs:
 
         # get credential authorizations for the org
         credentials=$(gh api --paginate "/orgs/${org}/credential-authorizations")
+
+        # check if = []
+        if [ "$credentials" == "[]" ]; then
+            echo "❗️ No credentials found for org: ${{ inputs.organization }} (double check the org name and that SSO is configured)"
+            exit 0
+        fi
 
         # Loop through the array in the JSON object
         for item in $(echo "${credentials}" | jq -r '.[] | @base64'); do

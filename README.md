@@ -13,6 +13,6 @@
     policy-in-days: 90
     github-token: ${{ secrets.ORG_ADMIN_TOKEN }}
     dry-run: false # change to true to not revoke any PATs
-    create-issue: false # change to true to create an issue and assign to the user whose PAT is being revoked
+    create-issue: false # change to true to create an issue and assign to the user whose PAT is being revoked (can't be used with dry-run=true)
     issue-repo: ${{ github.repository }} # if create-issue is true, repo to create the issue in
 ```
