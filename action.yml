@@ -73,8 +73,8 @@ runs:
                 # check if there is an expiration date set on PAT or not
                 if [ "$authorized_credential_expires_at" != "null" ]; then
                     # Convert the authorized_credential_expires_at date to seconds since the epoch
-                    # expires_at=$(gdate -d "${authorized_credential_expires_at}" +%s) # only works on linux / or on mac with gdate
-                    expires_at=$(date -jf "%Y-%m-%dT%H:%M:%S.000Z" "${authorized_credential_expires_at}" +%s)
+                    expires_at=$(date -d "${authorized_credential_expires_at}" +%s) # only works on linux / or on mac with gdate
+                    # expires_at=$(date -jf "%Y-%m-%dT%H:%M:%S.000Z" "${authorized_credential_expires_at}" +%s) # this is macOS, non-gnu date command ie gdate
 
                     # Calculate the difference between the two dates in seconds
                     diff=$((expires_at - now))
