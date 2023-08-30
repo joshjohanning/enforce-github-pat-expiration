@@ -88,13 +88,14 @@ runs:
                     if [ $dry_run == "false" ]; then
                         # revoke the credential
                         if [ $dry_run == "false" ]; then                        
-                        gh api -X DELETE "/orgs/${org}/credential-authorizations/${credential_id}"
-                        if [ $create_issue == "true" ]; then
-                            curl -L -X POST \
-                              -H "Accept: application/vnd.github+json" \
-                              -H "Authorization: Bearer ${{ github.token}}" https://api.github.com/repos/${issue_repo}/issues \
-                              -H "X-GitHub-Api-Version: 2022-11-28" \
-                              -d '{"title":"GitHub PAT revoked: ${login}","body":"Your GitHub PAT has been revoked due to not meeting the minimum expiration requirements of ${policy_in_days} days. Please [create a new PAT](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) with an expiration date of at least ${policy_in_days} days.","assignees":["${login}"]}'
+                            gh api -X DELETE "/orgs/${org}/credential-authorizations/${credential_id}"
+                            if [ $create_issue == "true" ]; then
+                                curl -L -X POST \
+                                  -H "Accept: application/vnd.github+json" \
+                                  -H "Authorization: Bearer ${{ github.token}}" https://api.github.com/repos/${issue_repo}/issues \
+                                  -H "X-GitHub-Api-Version: 2022-11-28" \
+                                  -d '{"title":"GitHub PAT revoked: ${login}","body":"Your GitHub PAT has been revoked due to not meeting the minimum expiration requirements of ${policy_in_days} days. Please [create a new PAT](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) with an expiration date of at least ${policy_in_days} days.","assignees":["${login}"]}'
+                            fi
                         fi
                     else
                         echo "     - ⚠️ DRY RUN: not revoking credential"
