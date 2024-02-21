@@ -90,13 +90,15 @@ runs:
                     echo "     - Credential ID: ${credential_id}"
                     echo "     - Authorized Credential Expires At: ${authorized_credential_expires_at}"
                     echo "     - Authorized Credential Note: ${authorized_credential_note}"
-                    echo -e "- ❌ Revoking SSO access for PAT:\n  - login: ${login}\n  - Credential ID: ${credential_id}\n  - Authorized Credential Expires At: ${authorized_credential_expires_at}\n  - Authorized Credential Note: ${authorized_credential_note}\n" >> $GITHUB_STEP_SUMMARY
+                    echo -e "- ❌ Revoking SSO access for PAT:\n  - login: \`${login}\`\n  - Credential ID: \`${credential_id}\`\n  - Authorized Credential Expires At: \`${authorized_credential_expires_at}\`\n  - Authorized Credential Note: \`${authorized_credential_note}\`\n" >> $GITHUB_STEP_SUMMARY
 
                     if [ $dry_run == "false" ]; then
                         # revoke the credential
-                        if [ $dry_run == "false" ]; then                        
+                        if [ $dry_run == "false" ]; then
+                            echo " ... revoking credential ..."
                             gh api -X DELETE "/orgs/${org}/credential-authorizations/${credential_id}"
                             if [ $create_issue == "true" ]; then
+                                echo " ... creating issue ..."
                                 curl -Ls -X POST \
                                   -H "Accept: application/vnd.github+json" \
                                   -H "Authorization: Bearer ${{ github.token}}" https://api.github.com/repos/${issue_repo}/issues \
